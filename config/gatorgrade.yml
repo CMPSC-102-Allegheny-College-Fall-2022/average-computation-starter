@@ -1,0 +1,133 @@
+setup: |
+  cd average && poetry install
+  echo "Done installing project dependencies!"
+---
+
+# --> check the Python program
+- average/average/main.py:
+  - description: Ensure that the main.py file exists in the average/average directory
+    check: ConfirmFileExists
+  - description: Complete all TODOs, remove the TODO markers in the main.py
+    check: MatchFileFragment
+    options:
+      fragment: TODO
+      count: 0
+      exact: true
+  - description: Define the compute_average function in main.py
+    check: MatchFileFragment
+    options:
+      fragment: "def compute_average("
+      count: 1
+      exact: true
+  - description: Call the contents.splitlines function once in main.py
+    check: MatchFileFragment
+    options:
+      fragment: "contents.splitlines("
+      count: 1
+      exact: true
+  - description: Define the confirm_valid_file function in main.py
+    check: MatchFileFragment
+    options:
+      fragment: "def confirm_valid_file("
+      count: 1
+      exact: true
+  - description: Write the conditional statement to confirm valid file in main.py
+    check: MatchFileFragment
+    options:
+      fragment: "if confirm_valid_file"
+      count: 1
+      exact: false
+  - description: Create a sufficient number of docstring (i.e., multiple-line) comments in main.py
+    check: CountMultipleLineComments
+    options:
+      language: "Python"
+      count: 4
+      exact: false
+  - description: Create a sufficient number of single-line comments in main.py
+    check: CountSingleLineComments
+    options:
+      language: "Python"
+      count: 20
+      exact: false
+
+# --> check the Python program
+- average/tests/test_average.py:
+  - description: Ensure that the test_average.py file exists in the average/tests/test_average directory
+    check: ConfirmFileExists
+  - description: Complete all TODOs, remove the TODO markers in the main.py
+    check: MatchFileFragment
+    options:
+      fragment: TODO
+      count: 0
+      exact: true
+  - description: Confirm that the test_average.py file contains the required number of test cases
+    check: MatchFileFragment
+    options:
+      fragment: test_
+      count: 5
+      exact: true
+  - description: Create a sufficient number of docstring (i.e., multiple-line) comments in test_average.py
+    check: CountMultipleLineComments
+    options:
+      language: "Python"
+      count: 6
+      exact: true
+  - description: Create a sufficient number of compute_average( function calls in test_average.py
+    check: MatchFileFragment
+    options:
+      fragment: "compute_average("
+      count: 4
+      exact: true
+
+- writing/reflection.md:
+  - description: Ensure that reflection.md file exists in the writing/ directory
+    check: ConfirmFileExists
+  - description: Write a minimum number of meaningful words in the reflection
+    check: CountFileWords
+    options:
+      count: 250
+      exact: false
+  - description: Confirm that the markdown file has the correct number of headers
+    check: CountMarkdownTags
+    options:
+      tag: heading
+      count: 10
+      exact: true
+  - description: Confirm that the markdown file has the correct number of code blocks
+    check: CountMarkdownTags
+    options:
+      tag: code_block
+      count: 2
+      exact: true
+  - description: Complete all TODOs, remove the TODO markers in the reflection.md
+    check: MatchFileFragment
+    options:
+      fragment: TODO
+      count: 0
+      exact: true
+  - description: Delete the 'Add Your Name Here' prompt in the reflection file
+    check: MatchFileFragment
+    options:
+      fragment: "Add Your Name Here"
+      count: 0
+      exact: true
+  - description: Verify the answer contains -0.95 in the reflection file
+    check: MatchFileFragment
+    options:
+      fragment: "-0.95"
+      count: 1
+      exact: true
+
+# count number of commits in the GitHub repository
+- description: Have at least a specific minimum number of commits (5) in repository
+  check: CountCommits
+  options:
+    count: 5
+
+# run the program and confirm correct number of lines in the output
+- description: Run the program and confirm the correct number of non-blank lines in the output
+  check: CountCommandOutput
+  options:
+    command: 'cd average; poetry run average --dir input --file numbers.txt'
+    count: 3
+    exact: true
